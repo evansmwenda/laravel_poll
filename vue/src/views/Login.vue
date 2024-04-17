@@ -6,6 +6,15 @@
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit="login">
+          <div v-if="errorMsg" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded">
+            {{ errorMsg }}
+            <span @click="errorMsg=''">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+
+            </span>
+          </div>
           <div>
             <div class="mt-2">
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
@@ -36,6 +45,7 @@
 <script setup>
   import store from '../store';
   import {useRouter} from "vue-router";
+  import {ref} from 'vue';
 
 const router = useRouter();
  
@@ -43,6 +53,8 @@ const user ={
  email: '',
  password: ''
 };
+
+let errorMsg = ref('')
 
 function login(ev){
   ev.preventDefault();
@@ -52,6 +64,9 @@ function login(ev){
         router.push({
           name: 'Dashboard'
         })
+      })
+      .catch(err => {
+        errorMsg.value = err.response.data.error
       })
 }
 </script>
