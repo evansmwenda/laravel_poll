@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\PollAnswer;
+use App\Models\PollQuestion;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('poll_question_answers', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(PollQuestion::class,'poll_question_id');
+            $table->foreignIdFor(PollAnswer::class,'poll_answer_id');
+            $table->text('answer');
             $table->timestamps();
         });
     }
