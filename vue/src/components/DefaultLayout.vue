@@ -23,7 +23,7 @@
                   :to="item.to" 
                   active-class="bg-gray-900 text-white"
                   :class="[
-                    this.$route.name === item.to.name ? '' 
+                    currentRoute.name === item.to.name ? '' 
                   : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'block rounded-md px-3 py-2 text-sm font-medium']" 
                   >{{ item.name }}</router-link>
@@ -74,7 +74,7 @@
             :to="item.to" 
             active-class="bg-gray-900 text-white"
             :class="[
-              this.$route.name === item.to.name ? '' 
+              currentRoute.name === item.to.name ? '' 
             : 'text-gray-300 hover:bg-gray-700 hover:text-white',
              'block rounded-md px-3 py-2 text-base font-medium']" 
             >{{ item.name }}</router-link>
@@ -111,6 +111,11 @@
   const store = useStore()
   const router = useRouter()
   const user = computed(() => store.state.user.data) 
+
+  // Compute current route
+  const currentRoute = router.currentRoute;
+
+
   const navigation = [
     { name: 'Dashboard',to: {name: 'Dashboard'},},
     { name: 'surveys', to: {name: 'Surveys'},},
