@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\URL;
 
-class PollResource extends JsonResource
+class PollResourceDashboard extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,11 +22,10 @@ class PollResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'status' => !!$this->status,
-            'description' => $this->description,
-            'created_at' => (new \DateTime($this->created_at))->format('Y-m-d H:i:s'),
-            'updated_at' => (new \DateTime($this->updated_at))->format('Y-m-d H:i:s'),
-            'expire_date' => (new \DateTime($this->expire_date))->format('Y-m-d'),
-            'questions' => PollQuestionResource::collection($this->questions)
+            'created_at' => (new DateTime($this->created_at))->format('Y-m-d H:i:s'),
+            'expire_date' => $this->expire_date,
+            'questions' => $this->questions()->count(),
+            'answers' => $this->answers()->count()
         ];
     }
 }
