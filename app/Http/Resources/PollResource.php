@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 class PollResource extends JsonResource
 {
@@ -17,7 +18,9 @@ class PollResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'slug' => $this->title,
+            'slug' => $this->slug,
+            'image' => $this->image,
+            'image_url' => $this->image ? URL::to($this->image) : null,
             'status' => $this->status !== 'draft',
             'description' => $this->description,
             'created_at' => $this->created_at,

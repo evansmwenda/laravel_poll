@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePollRequest;
 use App\Http\Resources\PollResource;
 use App\Models\Poll;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
@@ -77,7 +78,7 @@ class PollController extends Controller
      */
     public function show(Poll $poll,Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user();
         if($user->id !== $poll->user_id){
             //not the owner of the poll
             abort(403, 'Unauthorized action');
@@ -114,10 +115,16 @@ class PollController extends Controller
      */
     public function destroy(Poll $poll,Request $request)
     {
-        $user = $request->user();
+        $user = Auth::user(); 
         if($user->id !== $poll->user_id){
             //not the owner of the poll
             abort(403, 'Unauthorized action');
+        }
+
+        //delete old image
+        if($poll->image){
+            $absolutePath = public_path($poll->image);
+            File::delete($absolutePath);
         }
 
         $poll->delete();

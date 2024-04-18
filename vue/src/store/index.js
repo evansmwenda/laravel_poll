@@ -89,50 +89,71 @@ const store = createStore({
             data:{},
             token: sessionStorage.getItem('TOKEN')
         },
+        currentPoll: {
+            loading: false,
+            data: {}
+        },
         polls:  [...tmpPolls],
         questionTypes: ["text","select","radio","checkbox","textarea"]
     },
     getters:{},
     actions:{
+        getPoll( { commit },id ){
+            commit("setCurrentPollLoading",true);
+            return axiosClient.get(`/polls/${id}`)
+                .then((res) => {
+                    commit("setCurrentPoll",res.data);
+                    commit("setCurrentPollLoading",false);
+                    return res;
+                })
+                .catch((err) => {
+                    commit("setCurrentPollLoading",false);
+                    throw err;
+                });
+        },
         savePoll({ commit },poll){
             delete poll.image_url;
             
             let response;
             if(poll.id){
                 //we are updating
-                response  = axiosClient.put("/polls/${poll.id}",poll)
+                response  = axiosClient.put(`/polls/${poll.id}`,poll)
                 .then((res) => {
-                    commit("updatePoll",res.data);
+                    commit("setCurrentPoll",res.data);
                     return res;
                 });
                 
             }else{
                 //creating new
-                response  = axiosClient.post("/polls",poll)
+                response  = axiosClient.post(`/polls`,poll)
                 .then((res) => {
-                    commit("savePoll",res.data);
+                    commit("setCurrentPoll",res.data);
                     return res;
                 });
                 
             }
             return response;
         },
+        deletePoll({},id){
+            console.log("deletinggggg "+id);
+            return axiosClient.delete(`/polls/${id}`);
+        },
         register({ commit }, user){
-            return axiosClient.post('/register',user)
+            return axiosClient.post(`/register`,user)
             .then(({data}) => {
                 commit('setUser',data);
                 return data;
             })
         },
         login({ commit }, user){
-            return axiosClient.post('/login',user)
+            return axiosClient.post(`/login`,user)
             .then(({data}) => {
                 commit('setUser',data);
                 return data;
             })
         },
         logout({ commit }){
-            return axiosClient.post('/logout')
+            return axiosClient.post(`/logout`)
             .then(response => {
                 commit('logout');
                 console.log("logging out");
@@ -142,17 +163,11 @@ const store = createStore({
         }
     },
     mutations:{
-        savePoll: (state,poll) => {
-           state.polls = [...state.polls, poll.data]
+        setCurrentPollLoading: (state, loading)=>{
+            state.currentPoll.loading = loading;
         },
-        updatePoll: (state,poll) => {
-            state.polls = state.polls.map((s) => {
-                if(s.id == poll.data.id){
-                    return poll.data;
-                }
-                return s;
-            });
-           
+        setCurrentPoll: (state, poll) => {
+            state.currentPoll.data = poll.data;
         },
         logout: (state) => {
             state.user.data = {};

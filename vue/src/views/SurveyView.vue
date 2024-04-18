@@ -3,11 +3,13 @@
         <template v-slot:header>
             <div class="flex items-center justify-between">
                 <h1 class="text-3xl font-bold tracking-tight text-gray-900">
-                    {{ model.id ? model.title : 'Create New Poll' }}
+                    {{ route.params.id ? model.title : 'Create New Poll' }}
                 </h1>
+                <button v-if="route.params.id" @click="deletePoll()" type="button" class="py-2 px-3 text-sm text-white bg-red-500 rounded-md hover:bg-red-700">Delete Poll</button>
             </div>
         </template>
-        <form @submit.prevent="savePoll">
+        <div v-if="pollLoading" class="flex justify-center">Loading...</div>
+        <form v-else @submit.prevent="savePoll">
             <div class="shadow sm:rounded-md sm:overflow-hidden">
                 
                 <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
@@ -131,7 +133,7 @@
 <script setup>
 import { v4 as uuidv4} from "uuid";
 import store from '../store';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 
 import PageComponent from '../components/PageComponent.vue';
@@ -140,19 +142,30 @@ import QuestionEditor from '../components/editor/QuestionEditor.vue';
 const route = useRoute();
 const router = useRouter();
 
+const pollLoading = computed(() => store.state.currentPoll.loading);
+
 let model = ref({
     title : '',
     status: false,
     description:null,
-    image : null,
+    image_url : null,
     expiry_date: null,
     questions:[]
 });
 
+//watch current poll for changes
+watch(
+    () => store.state.currentPoll.data,
+    (newVal,oldVal) => {
+        model.value = {
+            ...JSON.parse(JSON.stringify(newVal)),
+            status: newVal.status !== "draft",
+        };
+    }
+)
+
 if(route.params.id){
-    model.value = store.state.polls.find(
-        (s) => s.id === parseInt(route.params.id)
-    );
+    store.dispatch("getPoll",route.params.id);
 }
 
 function onFileSelected(ev){
@@ -205,6 +218,21 @@ function savePoll(){
           }
         })
       })
+}
+
+function deletePoll(){
+    console.log("deleting ->"+model.value.id);
+    if(
+        confirm(
+            `Are you sure you want to delete this poll? Operation cannot be undone!!`
+        )
+    ){
+        store.dispatch('deletePoll',model.value.id).then(() => {
+            router.push({
+                name: 'Surveys'
+            });
+        });
+    }
 }
 </script>
 
