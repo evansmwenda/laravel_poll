@@ -7,6 +7,8 @@ import Surveys from '../views/Surveys.vue';
 import SurveyView from '../views/SurveyView.vue';
 import DefaultLayout from '../components/DefaultLayout.vue';
 import AuthLayout from '../components/AuthLayout.vue';
+import NotFound from "../views/NotFound.vue";
+import SurveyPublicView from "../views/SurveyPublicView.vue";
 
 import store from "../store";
 
@@ -43,6 +45,12 @@ const routes = [
     },
 
     {
+        path: "/view/poll/:slug",
+        name: 'SurveyPublicView',
+        component: SurveyPublicView
+    },
+
+    {
         path: '/auth',
         redirect: '/login',
         name: 'Auth',
@@ -62,6 +70,11 @@ const routes = [
         ]
 
     },
+    {
+        path: '/404',
+        name: 'NotFound',
+        component: NotFound
+      }
 ];
 
 const router = createRouter({
