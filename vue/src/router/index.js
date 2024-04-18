@@ -25,7 +25,7 @@ const routes = [
             },
             {
                 path: '/polls',
-                name: 'Surveys',
+                name: 'Polls',
                 component: Surveys
             },
             {
