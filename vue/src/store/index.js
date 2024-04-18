@@ -1,87 +1,6 @@
 import {createStore} from "vuex";
 import axiosClient from "../axios";
-const tmpPolls = 
-[
-    {
-    id:1,
-    title: 'The best channel',
-    slug: 'the-best-channel',
-    status: 'draft',
-    image: 'https://placehold.it/120',
-    description: 'I am a web developer lorem ipsum dolerum with 9 years experience',
-    created_at: "2024-04-18 20:00:00",
-    updated_at: "2024-04-18 20:00:00",
-    expiry_date: "2024-05-01 20:00:00",
-    questions:[
-        {
-            id: 1,
-            type: 'radio',
-            question: 'From which continent are you?',
-            description: null,
-            data:{
-                options: [
-                    {
-                        uuid: '861864b2-bfb9-4f88-8282-49926830a76a',
-                        text: 'Africa'
-                    },
-                    {
-                        uuid: '861864b9-bfb9-4f88-8282-49926830a76a',
-                        text: 'America'
-                    },
-                    {
-                        uuid: '861864b8-bfb9-4f88-8282-49926830a76a',
-                        text: 'Asia'
-                    },
-                ]
-            }
-        },
-        {
-            id: 2,
-            type: 'radio',
-            question: 'Which language videos do you want to see on my website?',
-            description: null,
-            data:{
-                options: [
-                    {
-                        uuid: '861864b2-bfb9-4f88-8282-49926830a76a',
-                        text: 'Spring Boot'
-                    },
-                    {
-                        uuid: '861864b9-bfb9-4f88-8282-49926830a76a',
-                        text: 'Flutter BLoC'
-                    },
-                    {
-                        uuid: '861864b8-bfb9-4f88-8282-49926830a76a',
-                        text: 'MicroServices Architecture'
-                    },
-                ]
-            }
-        },
-        {
-            id: 3,
-            type: 'radio',
-            question: 'Which PHP framework do you prefer?',
-            description: null,
-            data:{
-                options: [
-                    {
-                        uuid: '8633864b2-bfb9-4f88-8282-49926830a76a',
-                        text: 'Laravel'
-                    },
-                    {
-                        uuid: '863864b9-bfb9-4f88-8282-49926830a76a',
-                        text: 'CodeIgniter'
-                    },
-                    {
-                        uuid: '866864b8-bfb9-4f88-8282-49926830a76a',
-                        text: 'Vanilla'
-                    },
-                ]
-            }
-        },
-    ]
-}
-];
+
 
 const store = createStore({
     state:{
@@ -93,7 +12,10 @@ const store = createStore({
             loading: false,
             data: {}
         },
-        polls:  [...tmpPolls],
+        polls:  {
+            loading:false,
+            data:[]
+        },
         questionTypes: ["text","select","radio","checkbox","textarea"]
     },
     getters:{},
@@ -138,6 +60,15 @@ const store = createStore({
             console.log("deletinggggg "+id);
             return axiosClient.delete(`/polls/${id}`);
         },
+        getAllPolls({commit}){
+            commit("setPollsLoading",true);
+            return axiosClient.get('/polls')
+                .then((res) => {
+                    commit("setPollsLoading",false);
+                    commit("setPolls",res.data);
+                    return res;
+                })
+        },
         register({ commit }, user){
             return axiosClient.post(`/register`,user)
             .then(({data}) => {
@@ -163,6 +94,12 @@ const store = createStore({
         }
     },
     mutations:{
+        setPollsLoading: (state, loading)=>{
+            state.polls.loading = loading;
+        },
+        setPolls: (state, polls) => {
+            state.polls.data = polls.data;
+        },
         setCurrentPollLoading: (state, loading)=>{
             state.currentPoll.loading = loading;
         },
