@@ -95,6 +95,7 @@ const store = createStore({
     getters:{},
     actions:{
         savePoll({ commit },poll){
+            delete poll.image_url;
             
             let response;
             if(poll.id){

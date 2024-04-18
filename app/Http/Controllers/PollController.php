@@ -6,7 +6,10 @@ use App\Http\Requests\StorePollRequest;
 use App\Http\Requests\UpdatePollRequest;
 use App\Http\Resources\PollResource;
 use App\Models\Poll;
+use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Str;
 
 class PollController extends Controller
 {
@@ -24,8 +27,47 @@ class PollController extends Controller
      */
     public function store(StorePollRequest $request)
     {
-        $result = Poll::create($request->validated());
+        $data = $request->validated();
+
+        if(isset($data['image'])){
+            //save the image
+            $imagePath = $this->saveImage($data['image']);
+            $data['image'] = $imagePath;
+        }
+
+        $result = Poll::create($data);
         return new PollResource($result);
+    }
+
+    public function saveImage($image){
+        //check if image is valid base64 string
+        if(preg_match('/^data:image\/(\w+);base64,/',$image,$type)){
+            //matches
+            $image = substr($image, strpos($image,',') + 1);
+            $type = strtolower($type[1]);//jpg ,png,gif
+            if(!in_array($type,['jpg','png','gif','jpeg'])){
+                throw new Exception("Did not match file extension");
+            }
+
+            $image = str_replace(' ','+',$image);
+            $image = base64_decode($image);
+
+            if($image == false){
+                throw new \Exception("base64_decode failed");
+            }
+
+            $dir = 'images/';
+            $file = Str::random().'.'.$type;
+            $absolutePath = public_path($dir);
+            $relativePath = $dir.$file;
+            if (!File::exists($absolutePath)){
+                File::makeDirectory($absolutePath,0755,true);
+            }
+
+            file_put_contents($relativePath,$image);
+        }else{
+            throw new Exception("Did not match data URI with image data");
+        }
     }
 
     /**

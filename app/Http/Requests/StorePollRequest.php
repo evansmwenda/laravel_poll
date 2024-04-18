@@ -34,6 +34,7 @@ class StorePollRequest extends FormRequest
         return [
             'title' => 'required|string|max:1000',
             'status' => 'required|boolean',
+            'image' => 'nullable|string',
             'user_id' => 'exists:users,id',
             'description' => 'nullable|string|',
             'expiry_date' => 'nullable|date|after:tomorrow',
