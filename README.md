@@ -1,4 +1,4 @@
-#Laravel Polling System 
+### Laravel VueJS FullStack Polling System 
 
 ## Requirements
 You need to have PHP version **8.1** or above.
@@ -15,7 +15,7 @@ This project has Vue JS for  the front end and Laravel for the backend.
 6. Generate a new application key [ php artisan key:generate]
 7. Run `php artisan serve` to start the project at http://localhost:8000
 
-#### Frontend
+## Frontend
 1. Navigate to `vue` folder using terminal [cd vue]
 2. Run `npm install` to install vue.js project dependencies
 3. Start frontend by running `npm run dev`
