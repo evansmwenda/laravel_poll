@@ -6,19 +6,33 @@
   
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" @submit="login">
-          <div v-if="errorMsg" class="flex items-center justify-between py-3 px-5 bg-red-500 text-white rounded">
+          <Alert v-if="errorMsg">
             {{ errorMsg }}
-            <span @click="errorMsg=''">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+            <span
+              @click="errorMsg = ''"
+              class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
-
             </span>
-          </div>
+          </Alert>
           <div>
             <div class="mt-2">
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-              <input id="email" name="email" type="email" v-model="user.email" autocomplete="email" required="" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input id="email" name="email" type="email" v-model="user.email" autocomplete="email" required=""
+               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
   
@@ -46,6 +60,7 @@
   import store from '../store';
   import {useRouter} from "vue-router";
   import {ref} from 'vue';
+  import Alert from "../components/Alert.vue";
 
 const router = useRouter();
  
@@ -55,18 +70,26 @@ const user ={
 };
 
 let errorMsg = ref('')
+let loading = ref(false);
 
 function login(ev){
   ev.preventDefault();
+  loading.value = true;
+
   store
     .dispatch('login',user)
       .then(() => {
+        loading.value = false;
         router.push({
           name: 'Dashboard'
         })
       })
       .catch(err => {
-        errorMsg.value = err.response.data.error
+        loading.value = false;
+        if (err.status === 422) {
+          // errors.value = error.response.data.errors;
+          errors.value = "Incorrect email/password combination";
+        }
       })
 }
 </script>

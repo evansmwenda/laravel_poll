@@ -117,6 +117,11 @@ const store = createStore({
                 commit('setToken', data.token)
                 return data;
             })
+            .catch(({err}) => {
+                console.log("caugt error" + err);
+                // commit('dashboardLoading', false)
+                throw err;
+            })
         },
         logout({ commit }){
             return axiosClient.post(`/logout`)
@@ -132,19 +137,19 @@ const store = createStore({
               commit('setUser', res.data)
             })
           },
-          getDashboardData({commit}) {
-            commit('dashboardLoading', true)
-            return axiosClient.get(`/dashboard`)
-            .then((res) => {
-              commit('dashboardLoading', false)
-              commit('setDashboardData', res.data)
-              return res;
-            })
-            .catch(error => {
-              commit('dashboardLoading', false)
-              return error;
-            })
-          },
+        getDashboardData({commit}) {
+        commit('dashboardLoading', true)
+        return axiosClient.get(`/dashboard`)
+        .then((res) => {
+            commit('dashboardLoading', false)
+            commit('setDashboardData', res.data)
+            return res;
+        })
+        .catch(error => {
+            commit('dashboardLoading', false)
+            return error;
+        })
+        },
           saveSurveyAnswer({commit}, {pollId, answers}) {
             return axiosClient.post(`/poll/${pollId}/answer`, {answers});
           },

@@ -8,7 +8,7 @@ import SurveyView from '../views/SurveyView.vue';
 import DefaultLayout from '../components/DefaultLayout.vue';
 import AuthLayout from '../components/AuthLayout.vue';
 import NotFound from "../views/NotFound.vue";
-import SurveyPublicView from "../views/SurveyPublicView.vue";
+import PollPublicView from "../views/PollPublicView.vue";
 
 import store from "../store";
 
@@ -47,7 +47,7 @@ const routes = [
     {
         path: "/view/poll/:slug",
         name: 'SurveyPublicView',
-        component: SurveyPublicView
+        component: PollPublicView
     },
 
     {
