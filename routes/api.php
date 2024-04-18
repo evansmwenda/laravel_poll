@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PollController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,8 +23,12 @@ Route::middleware('auth:sanctum')->group(function() {
     });
     Route::post('/logout',[AuthController::class,'logout']);
     Route::resource('/polls',PollController::class);
+
+    Route::get('/dashboard', [DashboardController::class, 'index']);
 });
 
+Route::get('/poll-by-slug/{poll:slug}', [PollController::class, 'showForGuest']);
+Route::post('/poll/{poll}/answer', [PollController::class, 'storeAnswer']);
 
 Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
