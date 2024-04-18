@@ -9,7 +9,7 @@ class PollQuestion extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['question','type','description','poll_id'];
+    protected $fillable = ['id','question','type','description','data','poll_id'];
 
     public function poll(){
         return $this->belongsTo(Poll::class);
