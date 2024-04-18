@@ -94,6 +94,28 @@ const store = createStore({
     },
     getters:{},
     actions:{
+        savePoll({ commit },poll){
+            
+            let response;
+            if(poll.id){
+                //we are updating
+                response  = axiosClient.put("/polls/${poll.id}",poll)
+                .then((res) => {
+                    commit("updatePoll",res.data);
+                    return res;
+                });
+                
+            }else{
+                //creating new
+                response  = axiosClient.post("/polls",poll)
+                .then((res) => {
+                    commit("savePoll",res.data);
+                    return res;
+                });
+                
+            }
+            return response;
+        },
         register({ commit }, user){
             return axiosClient.post('/register',user)
             .then(({data}) => {
@@ -119,6 +141,18 @@ const store = createStore({
         }
     },
     mutations:{
+        savePoll: (state,poll) => {
+           state.polls = [...state.polls, poll.data]
+        },
+        updatePoll: (state,poll) => {
+            state.polls = state.polls.map((s) => {
+                if(s.id == poll.data.id){
+                    return poll.data;
+                }
+                return s;
+            });
+           
+        },
         logout: (state) => {
             state.user.data = {};
             state.user.token = null;

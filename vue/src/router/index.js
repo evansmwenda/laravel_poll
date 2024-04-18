@@ -24,17 +24,17 @@ const routes = [
             component: Dashboard,
             },
             {
-                path: '/surveys',
+                path: '/polls',
                 name: 'Surveys',
                 component: Surveys
             },
             {
-                path: '/surveys/create',
+                path: '/polls/create',
                 name: 'SurveyCreate',
                 component: SurveyView
             },
             {
-                path: '/surveys/:id',
+                path: '/polls/:id',
                 name: 'SurveyView',
                 component: SurveyView
             },

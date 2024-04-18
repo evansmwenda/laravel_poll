@@ -129,13 +129,13 @@
 import { v4 as uuidv4} from "uuid";
 import store from '../store';
 import { ref } from 'vue';
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import PageComponent from '../components/PageComponent.vue';
 import QuestionEditor from '../components/editor/QuestionEditor.vue';
 
 const route = useRoute();
-
+const router = useRouter();
 
 let model = ref({
     title : '',
@@ -177,6 +177,17 @@ function questionChange(question){
         }
         return q;
     });
+}
+
+function savePoll(){
+    store.dispatch("savePoll",model.value).then((response) => {
+        router.push({
+          name: 'SurveyView',
+          params: {
+            id: response.data.data.id
+          }
+        })
+      })
 }
 </script>
 
