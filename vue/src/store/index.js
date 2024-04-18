@@ -89,7 +89,8 @@ const store = createStore({
             data:{},
             token: sessionStorage.getItem('TOKEN')
         },
-        polls:  [...tmpPolls]
+        polls:  [...tmpPolls],
+        questionTypes: ["text","select","radio","checkbox","textarea"]
     },
     getters:{},
     actions:{
