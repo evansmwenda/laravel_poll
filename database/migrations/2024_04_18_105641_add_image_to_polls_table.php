@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('polls', function (Blueprint $table) {
             //
-            $table->string('image',255);
+            $table->string('image',255)->nullable()->after('user_id');
         });
     }
 

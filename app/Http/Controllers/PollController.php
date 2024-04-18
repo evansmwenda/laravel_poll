@@ -46,7 +46,7 @@ class PollController extends Controller
             $image = substr($image, strpos($image,',') + 1);
             $type = strtolower($type[1]);//jpg ,png,gif
             if(!in_array($type,['jpg','png','gif','jpeg'])){
-                throw new Exception("Did not match file extension");
+                throw new Exception("Did not match image extension");
             }
 
             $image = str_replace(' ','+',$image);
@@ -65,6 +65,8 @@ class PollController extends Controller
             }
 
             file_put_contents($relativePath,$image);
+
+            return $relativePath;
         }else{
             throw new Exception("Did not match data URI with image data");
         }
@@ -89,7 +91,21 @@ class PollController extends Controller
      */
     public function update(UpdatePollRequest $request, Poll $poll)
     {
-        $poll->update($request->validated());
+        $data = $request->validated();
+
+        if(isset($data['image'])){
+            //save the image
+            $imagePath = $this->saveImage($data['image']);
+            $data['image'] = $imagePath;
+
+            //delete old image
+            if($poll->image){
+                $absolutePath = public_path($poll->image);
+                File::delete($absolutePath);
+            }
+        }
+
+        $poll->update($data);
         return new PollResource($poll);
     }
 

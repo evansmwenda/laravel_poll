@@ -11,7 +11,12 @@ class UpdatePollRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        //check user updating
+        $poll = $this->route('poll');
+        if($this->user()->id !== $poll->user_id){
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -22,7 +27,13 @@ class UpdatePollRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:1000',
+            'status' => 'required|boolean',
+            'image' => 'nullable|string',
+            'user_id' => 'exists:users,id',
+            'description' => 'nullable|string|',
+            'expiry_date' => 'nullable|date|after:tomorrow',
+            'questions' => 'array'
         ];
     }
 }
