@@ -26,7 +26,7 @@ class PollResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'expiry_date' => $this->expiry_date,
-            'questions' => []
+            'questions' => PollQuestionResource::collection($this->questions)
         ];
     }
 }

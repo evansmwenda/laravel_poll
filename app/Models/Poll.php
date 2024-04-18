@@ -11,11 +11,15 @@ class Poll extends Model
 {
     use HasFactory,HasSlug;
 
-    public $fillable = ['user_id','title','status','image','slug','description','expiry_date'];
+    protected $fillable = ['user_id','title','status','image','slug','description','expiry_date'];
 
     public function getSlugOptions() :SlugOptions  {
         return SlugOptions::create()
         ->generateSlugsFrom('title')
         ->saveSlugsTo('slug');
+    }
+
+    public function questions(){
+        return $this->hasMany(PollQuestion::class);
     }
 }

@@ -6,10 +6,12 @@ use App\Http\Requests\StorePollRequest;
 use App\Http\Requests\UpdatePollRequest;
 use App\Http\Resources\PollResource;
 use App\Models\Poll;
+use App\Models\PollQuestion;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class PollController extends Controller
@@ -36,8 +38,16 @@ class PollController extends Controller
             $data['image'] = $imagePath;
         }
 
-        $result = Poll::create($data);
-        return new PollResource($result);
+        $poll = Poll::create($data);
+
+        //create questions
+        foreach ($data['questions'] as $question) {
+            $question['poll_id'] = $poll->id;
+            $this->createQuestion($question);
+        }
+
+
+        return new PollResource($poll);
     }
 
     public function saveImage($image){
@@ -129,5 +139,22 @@ class PollController extends Controller
 
         $poll->delete();
         return response('',204);
+    }
+
+    private function createQuestion($data){
+        if(is_array($data['data'])){
+            $data['data'] = json_encode($data['data']);
+        }
+
+        $validator = Validator::make($data,[
+            'question' => 'required|string',
+            'type' => 'required',
+            'description' => 'nullable|string',
+            'data' => 'present',
+            'poll_id' => 'exists:App\Models\Poll,id'
+        ]);
+
+        return PollQuestion::create($validator->validated());
+
     }
 }

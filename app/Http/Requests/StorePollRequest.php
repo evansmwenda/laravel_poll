@@ -38,6 +38,7 @@ class StorePollRequest extends FormRequest
             'user_id' => 'exists:users,id',
             'description' => 'nullable|string|',
             'expiry_date' => 'nullable|date|after:tomorrow',
+            'questions' => 'array'
         ];
     }
 }

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('poll_question_answers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PollQuestion::class,'poll_question_id');
-            $table->foreignIdFor(PollAnswer::class,'poll_answer_id');
+            $table->foreignIdFor(PollQuestion::class,'poll_question_id')->constrained();
+            $table->foreignIdFor(PollAnswer::class,'poll_answer_id')->constrained();
             $table->text('answer');
             $table->timestamps();
         });
