@@ -229,7 +229,7 @@ function deletePoll(){
     ){
         store.dispatch('deletePoll',model.value.id).then(() => {
             router.push({
-                name: 'Surveys'
+                name: 'Polls'
             });
         });
     }

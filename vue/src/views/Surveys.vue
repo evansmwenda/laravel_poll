@@ -21,7 +21,7 @@
           v-for="(poll, ind) in polls.data"
           :key="poll.id"
           :poll="poll"
-          @delete="deleteSurvey(survey)"
+          @delete="deleteSurvey(poll)"
         />
       </div>
       <div class="flex justify-center mt-5">

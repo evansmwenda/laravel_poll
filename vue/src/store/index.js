@@ -84,14 +84,6 @@ const store = createStore({
             }
             return response;
         },
-        deletePoll({ dispatch },id){
-            console.log("deletinggggg "+id);
-            return axiosClient.delete(`/polls/${id}`)
-            .then((res) =>{
-                dispatch('getAllPolls');
-                return res;
-            })
-        },
         getAllPolls({commit}, {url = null} = {}){
             commit("setPollsLoading",true);
             url = url || "/polls";
@@ -101,6 +93,14 @@ const store = createStore({
                     commit("setPolls",res.data);
                     return res;
                 })
+        },
+        deletePoll({ dispatch },id){
+            console.log("deletinggggg "+id);
+            return axiosClient.delete(`/polls/${id}`)
+            .then((res) =>{
+                dispatch('getAllPolls');
+                return res;
+            })
         },
         register({ commit }, user){
             return axiosClient.post(`/register`,user)
