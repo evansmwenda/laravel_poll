@@ -26,6 +26,7 @@ This project has Vue JS for  the front end and Laravel for the backend.
 ## RealTime Updates
 1. Run `php artisan websockets:serve`
 2. Navigate to http://localhost:8000/laravel-websockets
-3. Click the connect button on the interface.If successful, you should get a `Channels current state is connected`
+3. Click the connect button on the interface.
+If successful, you should get a `Channels current state is connected`
 4.Attempt to answer a poll.
 
