@@ -158,6 +158,12 @@ const store = useStore();
 const loading = computed(() => store.state.dashboard.loading);
 const data = computed(() => store.state.dashboard.data);
 
+window.Echo.channel('channel')
+    .listen('PollAnswered', (data) => {
+        // Handle incoming data
+        console.log(data);
+    });
+
 store.dispatch("getDashboardData").then((res) => {
   console.log("dashboarding");
   console.log(JSON.stringify(res.data));
