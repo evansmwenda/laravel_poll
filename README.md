@@ -19,5 +19,13 @@ This project has Vue JS for  the front end and Laravel for the backend.
 ## Frontend
 1. Navigate to `vue` folder using terminal 
 2. Run `npm install` to install vue.js project dependencies
-3. Start frontend by running `npm run dev`
-4. Open the link you'll be given after the above command and begin using the application
+3. Copy vue/.env.example into vue/.env
+4. Start frontend by running npm run dev
+5. Open http://localhost:5173 or the IP address and port that will be exposed by the npm run dev command
+
+## RealTime Updates
+1. Run `php artisan websockets:serve`
+2. Navigate to http://localhost:8000/laravel-websockets
+3. Click the connect button on the interface.If successful, you should get a `Channels current state is connected`
+4.Attempt to answer a poll.
+

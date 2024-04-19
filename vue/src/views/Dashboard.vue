@@ -158,6 +158,22 @@ const store = useStore();
 const loading = computed(() => store.state.dashboard.loading);
 const data = computed(() => store.state.dashboard.data);
 
+import Echo from 'laravel-echo';
+
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'local',
+    wsHost: import.meta.env.VUE_APP_WEBSOCKETS_SERVER,
+    wsPort: 6001,
+    disableStats: true,
+    forceTLS: false,
+    // enabledTransports: ['ws', 'wss'],
+});
+
+
 window.Echo.channel('channel')
     .listen('PollAnswered', (data) => {
         // Handle incoming data
