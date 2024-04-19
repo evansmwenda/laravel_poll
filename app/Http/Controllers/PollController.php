@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PollAnswered;
 use App\Http\Requests\StorePollAnswerRequest;
 use App\Http\Requests\StorePollRequest;
 use App\Http\Requests\UpdatePollRequest;
@@ -161,7 +162,6 @@ class PollController extends Controller
     public function storeAnswer(StorePollAnswerRequest $request, Poll $poll)
     {
         $validated = $request->validated();
-//        var_dump($validated, $survey);
 
         $surveyAnswer = PollAnswer::create([
             'poll_id' => $poll->id,
@@ -183,6 +183,9 @@ class PollController extends Controller
 
             $questionAnswer = PollQuestionAnswer::create($data);
         }
+
+        //create broadcast event here
+        broadcast(new PollAnswered($surveyAnswer));
 
         return response("", 201);
 
