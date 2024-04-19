@@ -26,8 +26,9 @@ class PollController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-
-        return PollResource::collection(Poll::where('user_id',$user->id)->orderBy('created_at', 'DESC')->paginate('10'));
+        
+        // return PollResource::collection(Poll::where('user_id',$user->id)->orderBy('created_at', 'DESC')->paginate('10'));
+        return PollResource::collection(Poll::where('status',1)->orderBy('created_at', 'DESC')->paginate('10'));
     }
 
     /**
@@ -69,12 +70,8 @@ class PollController extends Controller
         return new PollResource($poll);
     }
 
-    public function showForGuest(Poll $poll)
+    public function showForGuest(Poll $poll,Request $request)
     {
-        return response([
-            'data' => new PollResource($poll),
-            'status' => !$poll->status 
-        ]);
         if (!$poll->status) {
             return response("", 404);
         }

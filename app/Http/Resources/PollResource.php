@@ -16,6 +16,8 @@ class PollResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'user_id' => $this->user_id,
+            'logged_in_user' => $request->user() == null ? 0: $request->user()->id,
             'id' => $this->id,
             'image_url' => $this->image ? URL::to($this->image) : null,
             'title' => $this->title,

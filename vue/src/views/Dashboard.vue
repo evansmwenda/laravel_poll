@@ -5,18 +5,7 @@
       v-else
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-gray-700"
     >
-      <div
-        class="bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down order-1 lg:order-2"
-        style="animation-delay: 0.1s"
-      >
-        <h3 class="text-2xl font-semibold">Your Polls</h3>
-        <div
-          class="text-8xl pb-4 font-semibold flex-1 flex items-center justify-center"
-        >
-          {{ data.totalSurveys }}
-        </div>
-      </div>
-      <div
+    <div
         class="bg-white shadow-md p-3 text-center flex flex-col order-2 lg:order-4 animate-fade-in-down"
         style="animation-delay: 0.2s"
       >
@@ -27,6 +16,24 @@
         {{ data.allPolls }}
         </div>
       </div>
+    <div
+        class="bg-white shadow-md p-3 text-center flex flex-col animate-fade-in-down order-1 lg:order-2"
+        style="animation-delay: 0.1s"
+      >
+        <h3 class="text-2xl font-semibold">Your Polls</h3>
+        <div
+          class="text-8xl pb-4 font-semibold flex-1 flex items-center justify-center"
+        >
+          {{ data.totalSurveys }}
+        </div>
+        <h3 class="text-2xl font-semibold">Poll Attempts</h3>
+        <div
+          class="text-8xl pb-4 font-semibold flex-1 flex items-center justify-center"
+        >
+          {{ data.totalAnswers }}
+        </div>
+      </div>
+      
       <div
         class="row-span-2 animate-fade-in-down order-3 lg:order-1 bg-white shadow-md p-4"
       >

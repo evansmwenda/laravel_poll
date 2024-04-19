@@ -66,14 +66,14 @@
       })
       .then((response) => {
         if (response.status === 201) {
-          surveyFinished.value = true;
+          pollFinished.value = true;
         }
       });
   }
   
   function submitAnotherResponse() {
     answers.value = {};
-    surveyFinished.value = false;
+    pollFinished.value = false;
   }
   </script>
   
