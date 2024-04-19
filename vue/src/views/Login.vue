@@ -79,17 +79,14 @@ function login(ev){
   store
     .dispatch('login',user)
       .then(() => {
-        loading.value = false;
+        loading.value = true;
         router.push({
           name: 'Dashboard'
         })
       })
       .catch(err => {
         loading.value = false;
-        if (err.status === 422) {
-          // errors.value = error.response.data.errors;
-          errors.value = "Incorrect email/password combination";
-        }
+        errorMsg.value = "Incorrect email/password combination";
       })
 }
 </script>

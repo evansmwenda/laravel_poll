@@ -34,20 +34,6 @@ const store = createStore({
     },
     getters:{},
     actions:{
-        getSurveyBySlug({ commit }, slug) {
-            commit("setCurrentPollLoading", true);
-            return axiosClient
-              .get(`/poll-by-slug/${slug}`)
-              .then((res) => {
-                commit("setCursetCurrentPollrentSurvey", res.data);
-                commit("setCurrentPollLoading", false);
-                return res;
-              })
-              .catch((err) => {
-                commit("setCurrentSurvsetCurrentPollLoadingeyLoading", false);
-                throw err;
-              });
-          },
         getPoll( { commit },id ){
             commit("setCurrentPollLoading",true);
             return axiosClient.get(`/polls/${id}`)
@@ -61,6 +47,20 @@ const store = createStore({
                     throw err;
                 });
         },
+        getPollBySlug({ commit }, slug) {
+            commit("setCurrentPollLoading", true);
+            return axiosClient
+              .get(`/poll-by-slug/${slug}`)
+              .then((res) => {
+                commit("setCurrentPoll", res.data);
+                commit("setCurrentPollLoading", false);
+                return res;
+              })
+              .catch((err) => {
+                commit("setCurrentPollLoading", false);
+                throw err;
+              });
+          },
         savePoll({ commit },poll){
             delete poll.image_url;
             
@@ -110,19 +110,14 @@ const store = createStore({
                 return data;
             })
         },
-        login({ commit }, user){
-            return axiosClient.post(`/login`,user)
-            .then(({data}) => {
-                commit('setUser',data.user);
+        login({commit}, user) {
+            return axiosClient.post('/login', user)
+              .then(({data}) => {
+                commit('setUser', data.user);
                 commit('setToken', data.token)
                 return data;
-            })
-            .catch(({err}) => {
-                console.log("caugt error" + err);
-                // commit('dashboardLoading', false)
-                throw err;
-            })
-        },
+              })
+          },
         logout({ commit }){
             return axiosClient.post(`/logout`)
             .then(response => {
@@ -138,21 +133,21 @@ const store = createStore({
             })
           },
         getDashboardData({commit}) {
-        commit('dashboardLoading', true)
-        return axiosClient.get(`/dashboard`)
-        .then((res) => {
-            commit('dashboardLoading', false)
-            commit('setDashboardData', res.data)
-            return res;
-        })
-        .catch(error => {
-            commit('dashboardLoading', false)
-            return error;
-        })
+            commit('dashboardLoading', true)
+            return axiosClient.get(`/dashboard`)
+            .then((res) => {
+                commit('dashboardLoading', false)
+                commit('setDashboardData', res.data)
+                return res;
+            })
+            .catch(error => {
+                commit('dashboardLoading', false)
+                return error;
+            })
         },
-          saveSurveyAnswer({commit}, {pollId, answers}) {
-            return axiosClient.post(`/poll/${pollId}/answer`, {answers});
-          },
+        savePollAnswer({commit}, {pollId, answers}) {
+        return axiosClient.post(`/poll/${pollId}/answer`, {answers});
+        },
     },
     mutations:{
         logout: (state) => {
@@ -180,7 +175,7 @@ const store = createStore({
             state.polls.links = polls.meta.links;
             state.polls.data = polls.data;
         },
-        setCurrentPollLoading: (state, loading)=>{
+        setCurrentPollLoading: (state, loading) => {
             state.currentPoll.loading = loading;
         },
         setCurrentPoll: (state, poll) => {

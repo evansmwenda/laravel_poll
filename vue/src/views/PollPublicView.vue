@@ -4,11 +4,12 @@
       <form @submit.prevent="submitPoll" v-else class="container mx-auto">
         <div class="grid grid-cols-6 items-center">
           <div class="mr-4">
-            <img :src="poll.image_url" alt="" />
+            <img src="https://placehold.it/150" alt="" />
+            <!-- poll.image_url -->
           </div>
           <div class="col-span-5">
-            <h1 class="text-3xl mb-3">{{ poll.title }}</h1>
-            <p class="text-gray-500 text-sm" v-html="poll.description"></p>
+            <h1 class="text-3xl mb-3">{{ survey.title }}</h1>
+            <p class="text-gray-500 text-sm" v-html="survey.description"></p>
           </div>
         </div>
   
@@ -20,7 +21,7 @@
         </div>
         <div v-else>
           <hr class="my-3">
-          <div v-for="(question, ind) of poll.questions" :key="question.id">
+          <div v-for="(question, ind) of survey.questions" :key="question.id">
             <QuestionViewer
               v-model="answers[question.id]"
               :question="question"
@@ -47,8 +48,8 @@
   const route = useRoute();
   const store = useStore();
   
-  const loading = computed(() => store.state.currentSurvey.loading);
-  const survey = computed(() => store.state.currentSurvey.data);
+  const loading = computed(() => store.state.currentPoll.loading);
+  const survey = computed(() => store.state.currentPoll.data);
   
   const pollFinished = ref(false);
   
@@ -60,7 +61,7 @@
     console.log(JSON.stringify(answers.value, undefined, 2));
     store
       .dispatch("savePollAnswer", {
-        pollId: poll.value.id,
+        pollId: survey.value.id,
         answers: answers.value,
       })
       .then((response) => {

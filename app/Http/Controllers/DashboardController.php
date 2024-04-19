@@ -15,8 +15,11 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Total Number of Surveys
+        // Total Number of Surveys by user
         $total = Poll::query()->where('user_id', $user->id)->count();
+
+        //total number of polls created
+        $allPolls = Poll::query()->where('status', 1)->count();
 
         
 
@@ -35,9 +38,11 @@ class DashboardController extends Controller
             ->where('polls.user_id', $user->id)
             ->orderBy('end_date', 'DESC')
             ->limit(5)
-            ->getModels('poll_answers.*');
+            ->get();
+            // ->getModels('poll_answers.*');
 
             return [
+            'allPolls' => $allPolls,
             'totalSurveys' => $total,
             'latestSurvey' => $latest ? new PollResourceDashboard($latest) : null,
             'totalAnswers' => $totalAnswers,

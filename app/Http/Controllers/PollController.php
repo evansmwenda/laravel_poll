@@ -71,6 +71,10 @@ class PollController extends Controller
 
     public function showForGuest(Poll $poll)
     {
+        return response([
+            'data' => new PollResource($poll),
+            'status' => !$poll->status 
+        ]);
         if (!$poll->status) {
             return response("", 404);
         }
@@ -169,14 +173,14 @@ class PollController extends Controller
         ]);
 
         foreach ($validated['answers'] as $questionId => $answer) {
-            $question = PollQuestion::where(['id' => $questionId, 'survey_id' => $poll->id])->get();
+            $question = PollQuestion::where(['id' => $questionId, 'poll_id' => $poll->id])->get();
             if (!$question) {
                 return response("Invalid question ID: \"$questionId\"", 400);
             }
 
             $data = [
-                'survey_question_id' => $questionId,
-                'survey_answer_id' => $surveyAnswer->id,
+                'poll_question_id' => $questionId,
+                'poll_answer_id' => $surveyAnswer->id,
                 'answer' => is_array($answer) ? json_encode($answer) : $answer
             ];
 
