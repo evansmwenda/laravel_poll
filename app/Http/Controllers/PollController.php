@@ -14,11 +14,10 @@ use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Http\Request;
 class PollController extends Controller
 {
     /**
@@ -26,8 +25,9 @@ class PollController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        return PollResource::collection(Poll::where('user_id',$user->id)->orderBy('created_at', 'DESC')->paginate(10));
+        $user = $request->user();
+
+        return PollResource::collection(Poll::where('user_id',$user->id)->orderBy('created_at', 'DESC')->paginate('10'));
     }
 
     /**
@@ -60,7 +60,7 @@ class PollController extends Controller
      */
     public function show(Poll $poll,Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
         if($user->id !== $poll->user_id){
             //not the owner of the poll
             abort(403, 'Unauthorized action');
@@ -144,7 +144,7 @@ class PollController extends Controller
      */
     public function destroy(Poll $poll,Request $request)
     {
-        $user = Auth::user(); 
+        $user = $request->user(); 
         if($user->id !== $poll->user_id){
             //not the owner of the poll
             abort(403, 'Unauthorized action');
