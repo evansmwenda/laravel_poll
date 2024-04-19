@@ -15,9 +15,17 @@
   
         <div v-if="pollFinished" class="py-8 px-6 bg-emerald-400 text-white w-[600px] mx-auto">
           <div class="text-xl mb-3 font-semibold ">Thank you for participating in this survey.</div>
-          <button @click="submitAnotherResponse" type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <div class="flex items-center justify-between">
+            <button @click="submitAnotherResponse" type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Submit another response
           </button>
+          <router-link 
+            :to="{name: 'Polls'}"
+            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            
+            Go to Polls</router-link>
+          </div>
+          
         </div>
         <div v-else>
           <hr class="my-3">
