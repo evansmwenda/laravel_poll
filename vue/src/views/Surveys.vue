@@ -76,6 +76,7 @@ function deleteSurvey(poll) {
       `Are you sure you want to delete this poll? Operation can't be undone!!`
     )
   ) {
+    console.log("deleing pollid ->"+poll.id);
     store.dispatch("deletePoll", poll.id).then(() => {
       store.dispatch("getAllPolls");
     });

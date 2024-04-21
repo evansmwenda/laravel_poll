@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('question',2000);
             $table->text('description')->nullable();
             $table->longText('data')->nullable();
-            $table->foreignIdFor(Poll::class)->constrained();
+            $table->foreignIdFor(Poll::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

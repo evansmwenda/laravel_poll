@@ -6,13 +6,36 @@
     
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form class="space-y-6" @submit="register">
-            <Alert v-if="Object.keys(errors).length" class="flex-col items-stretch text-sm">
+            <Alert v-if="errorMsg">
+            {{ errorMsg }}
+            <span
+              @click="errorMsg = ''"
+              class="w-8 h-8 flex items-center justify-center rounded-full transition-colors cursor-pointer hover:bg-[rgba(0,0,0,0.2)]"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </span>
+          </Alert>
+
+            <!-- <Alert v-if="Object.keys(errors).length" class="flex-col items-stretch text-sm">
               <div v-for="(field, i) of Object.keys(errors)" :key="i">
                 <div v-for="(error, ind) of errors[field] || []" :key="ind">
                   * {{ error }}
                 </div>
               </div>
-            </Alert>
+            </Alert> -->
 
             <div>
               <div class="mt-2">
@@ -66,6 +89,7 @@
 
   const loading = ref(false);
 const errors = ref({});
+let errorMsg = ref('')
    
   const user ={
     name: '',
@@ -86,11 +110,9 @@ const errors = ref({});
             name: 'Dashboard'
           });
         })
-        .catch((error) => {
+        .catch(err => {
         loading.value = false;
-        if (error.response.status === 422) {
-          errors.value = error.response.data.errors;
-        }
+        errorMsg.value = "Please enter valid input details";
       });
   }
   </script>

@@ -199,13 +199,13 @@
         <!--/ Add new option -->
       </h4>
 
-      <div
-        v-if="!model.data.options.length"
-        class="text-xs text-gray-600 text-center py-3"
-      >
-        You don't have any options defined
-      </div>
-      <!-- Option list -->
+      <div v-if="model.data.options">
+        <div
+          v-if="!model.data.options.length"
+          class="text-xs text-gray-600 text-center py-3">
+          You don't have any options defined
+        </div>
+        <!-- Option list -->
       <div
         v-for="(option, index) in model.data.options"
         :key="option.uuid"
@@ -259,6 +259,10 @@
         <!--/ Delete Option -->
       </div>
       <!--/ Option list -->
+      </div>
+      <div v-else>
+        You don't have any options defined
+      </div>
     </div>
   </div>
   <!--/ Data -->
