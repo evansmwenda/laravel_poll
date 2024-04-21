@@ -29,5 +29,5 @@ This project has Vue JS for  the front end and Laravel for the backend.
 2. Navigate to http://localhost:8000/laravel-websockets
 3. Click the connect button on the interface.
 If successful, you should get a `Channels current state is connected`
-4. Login on [the frontend](http://localhost:5173) with both users on different browsers and with one user's dashboard open, create a poll or answer an existing poll and the information will be updated on the other user's dashboard throught web sockets without the need to reload the browser
+4. Login on the frontend => http://localhost:5173 with both users on different browsers and with one user's dashboard open, create a poll or answer an existing poll and the information will be updated on the other user's dashboard throught web sockets without the need to reload the browser
 
