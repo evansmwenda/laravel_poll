@@ -66,7 +66,6 @@
   store.dispatch("getPollBySlug", route.params.slug);
   
   function submitPoll() {
-    console.log(JSON.stringify(answers.value, undefined, 2));
     store
       .dispatch("savePollAnswer", {
         pollId: survey.value.id,

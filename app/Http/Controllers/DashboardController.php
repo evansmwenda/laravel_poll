@@ -16,12 +16,10 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // Total Number of Surveys by user
-        $total = Poll::query()->where('user_id', $user->id)->count();
+        $total = Poll::where('user_id', $user->id)->count();
 
         //total number of polls created
-        $allPolls = Poll::query()->where('status', 1)->count();
-
-        
+        $allPolls = Poll::where('status', 1)->count();
 
         // Latest Survey
         $latest = Poll::query()->where('user_id', $user->id)->latest('created_at')->first();

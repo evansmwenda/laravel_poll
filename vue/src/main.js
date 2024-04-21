@@ -13,10 +13,11 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: 'local',
-    wsHost: import.meta.env.VUE_APP_WEBSOCKETS_SERVER,
+    wsHost: window.location.hostname,//'127.0.0.1',
     wsPort: 6001,
     disableStats: true,
     forceTLS: false,
+    cluster: 'mt1'
     // enabledTransports: ['ws', 'wss'],
 });
 

@@ -6,7 +6,9 @@ use App\Events\PollAnswered;
 use App\Http\Requests\StorePollAnswerRequest;
 use App\Http\Requests\StorePollRequest;
 use App\Http\Requests\UpdatePollRequest;
+use App\Http\Resources\PollAnswerResource;
 use App\Http\Resources\PollResource;
+use App\Http\Resources\PollResourceDashboard;
 use App\Models\Poll;
 use App\Models\PollAnswer;
 use App\Models\PollQuestion;
@@ -52,6 +54,9 @@ class PollController extends Controller
             $question['poll_id'] = $poll->id;
             $this->createQuestion($question);
         }
+
+
+        broadcast(new PollAnswered());
 
 
         return new PollResource($poll);
@@ -185,7 +190,7 @@ class PollController extends Controller
         }
 
         //create broadcast event here
-        broadcast(new PollAnswered($surveyAnswer));
+        broadcast(new PollAnswered());
 
         return response("", 201);
 

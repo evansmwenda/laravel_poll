@@ -15,20 +15,17 @@ class PollAnswered implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $pollAnswer;
 
     /**
      * Create a new event instance.
      */
-    public function __construct(PollAnswer $pollAnswer)
+    public function __construct()
     {
-        $this->pollAnswer = $pollAnswer;
     }
 
     public function broadcastWith(){
         return [
             'hello' => 'there',
-            'pollAnswer' => $this->pollAnswer,
         ];
     }
     /**

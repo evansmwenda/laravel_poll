@@ -334,6 +334,7 @@ function dataChange() {
 }
 
 function addQuestion() {
+  console.log("added question");
   emit("addQuestion", props.index + 1);
 }
 
